@@ -23,9 +23,29 @@ def addroutes():
     files = glob.glob(f"website/*")
     # Getting all the files in web for the naming and creating of diffrent routes/website direcions.
 
-    init = f"""import flask , os
-from flask import Flask, render_template , redirect , request
+    init = f"""try:
+  import requests, os, shutil , time , subprocess, glob
+  from bs4 import BeautifulSoup
+  import flask 
+  from flask import Flask, render_template , redirect , request
+  
+except:
+  import os
+  os.system('pip install flask')
+  os.system('pip install bs4')
 
+  import requests, os, shutil , time , subprocess, glob
+  from bs4 import BeautifulSoup
+  import flask 
+  from flask import Flask, render_template , redirect , request
+
+template_dir = os.path.abspath('website')
+static_dir = os.path.abspath('website/assets')
+
+app = Flask(__name__, template_folder=template_dir , static_folder=static_dir)
+
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+  
 template_dir = os.path.abspath('website')
 static_dir = os.path.abspath('website/assets')
 
