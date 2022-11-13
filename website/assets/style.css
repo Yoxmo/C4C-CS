@@ -1,0 +1,28 @@
+body {
+  background-color: #ddb2b2;
+}
+
+h1, h3 {
+  color: #666;
+}
+
+img {
+  float: right;
+  height: 100px;
+}
+#main-campus {
+  color: #bb0000;
+}
+
+.regional-campus {
+  color: green;
+}
+
+p {
+  color: gray;
+}
+
+#band-info {
+  color: black;
+  font-weight: bold;
+}
