@@ -17,7 +17,6 @@ print('''
 # City art ascii for console.
 
 # Creating the flask app server.
-
 def addroutes():
 
     files = glob.glob(f"website/*")
