@@ -1,10 +1,14 @@
 try:
   import requests, os, shutil , time , subprocess, glob
   from bs4 import BeautifulSoup
+  from watchdog.observers import Observer
+  from watchdog.events import FileSystemEventHandler
+
 except:
   import os
   os.system('pip install flask')
   os.system('pip install bs4')
+  os.system('pip install watchdog')
 
 print('''
 ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
@@ -74,7 +78,6 @@ def index():
 @app.route('/{html}')
 def {html}():
     return render_template('{html}.html')
-
     """
                 open('app.py', 'a+').write(cleanedr)
             else:
@@ -90,13 +93,28 @@ def {html}():
     """ 
 
     open('app.py', 'a+').write(last)
-    # Creating the final part to run on all host (creating a live server from repl).
 
 addroutes()
-# Calling the addroutes before starting the app.py.
+# Creating the final part to run on all host (creating a live server from repl).
 
-subprocess.Popen(('python3', 'app.py')) 
+class MonitorFolder(FileSystemEventHandler):
+    FILE_SIZE=1000
+    def on_created(self, event):
+         print('[*] Updated files - adding to route...')
+         addroutes() # Calling the addroutes before starting the app.py.
 
-while True:
-  addroutes()
-  time.sleep(1)
+
+if __name__ == "__main__":
+    event_handler=MonitorFolder()
+    observer = Observer()
+    observer.schedule(event_handler, path='./website', recursive=True)
+    print("[-] Monitoring HTML files started")
+    subprocess.Popen(('python3', 'app.py')) 
+    observer.start()
+
+    try:
+        while(True):
+           time.sleep(1)
+    except KeyboardInterrupt:
+            observer.stop()
+            observer.join()
